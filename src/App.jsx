@@ -9,8 +9,28 @@ import Ejercicios from "./components/Ejercicios"
 import Progreso from "./components/Progreso"
 import MiProgreso from "./components/MiProgreso"
 import ProtectedRoute from "./components/ProtectedRoute"
+import { useEffect, useState } from "react"
+import { onAuthStateChanged } from "firebase/auth"
+import { auth } from "./firebase/firebase"
 
 export default function App() {
+const [user,setUser] = useState(null)
+const [loading,setLoading] = useState(true)
+
+useEffect(()=>{
+
+const unsubscribe = onAuthStateChanged(auth,(u)=>{
+setUser(u)
+setLoading(false)
+})
+
+return ()=>unsubscribe()
+
+},[])
+
+if(loading){
+return <p className="p-4">Cargando...</p>
+}
 
 return (
 
