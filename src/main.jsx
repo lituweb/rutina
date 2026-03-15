@@ -3,11 +3,6 @@ import ReactDOM from "react-dom/client"
 import App from "./App.jsx"
 import "./index.css"
 import { BrowserRouter } from "react-router-dom"
-import { registerSW } from "virtual:pwa-register"
-
-registerSW({
-  immediate: true
-})
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -16,3 +11,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     </BrowserRouter>
   </React.StrictMode>
 )
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.getRegistrations().then((registrations) => {
+    for (let registration of registrations) {
+      registration.unregister();
+    }
+  });
+}
