@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { Trash } from "lucide-react"
-import { deleteDoc, doc } from "firebase/firestore"
 import { db, auth } from "../firebase/firebase"
-import { collection, query, where, getDocs } from "firebase/firestore"
-
+import { collection, query, where, getDocs, orderBy } from "firebase/firestore"
 import { Pencil, Activity, Plus } from "lucide-react"
 
 export default function ListaRutinas(){
@@ -23,7 +20,8 @@ if(!user) return
 
 const q = query(
 collection(db,"rutinas"),
-where("userId","==",user.uid)
+where("userId","==",user.uid),
+orderBy("created","asc")
 )
 
 const snapshot = await getDocs(q)

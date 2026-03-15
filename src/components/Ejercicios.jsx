@@ -2,8 +2,9 @@ import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 import { db } from "../firebase/firebase"
-import { doc, getDoc, updateDoc } from "firebase/firestore"
+import { collection, query, where, doc, getDoc, getDocs, updateDoc } from "firebase/firestore"
 import { Home, ArrowRight } from "lucide-react"
+import { auth } from "../firebase/firebase"
 export default function Ejercicios(){
 
 const { id } = useParams()
@@ -61,11 +62,40 @@ ejercicios
 
 const guardarSemana = async () => {
 
-const ref = doc(db,"rutinas",id)
+const user = auth.currentUser
 
-const ejercicios = [...rutina.ejercicios]
+// traer todas las rutinas del usuario
+const q = query(
+collection(db,"rutinas"),
+where("userId","==",user.uid)
+)
+
+const snapshot = await getDocs(q)
+
+// recorrer cada rutina
+for(const documento of snapshot.docs){
+
+const data = documento.data()
+const ejercicios = [...data.ejercicios]
+
+let actualizado = false
 
 ejercicios.forEach(e => {
+
+const ejercicioLocal = rutina.ejercicios.find(
+ej => ej.nombre === e.nombre
+)
+
+if(ejercicioLocal){
+
+// actualizar peso y reps
+e.peso = ejercicioLocal.peso
+e.reps = ejercicioLocal.reps
+
+actualizado = true
+
+// guardar progreso solo en la rutina actual
+if(documento.id === id){
 
 const progreso = e.progreso || []
 
@@ -80,11 +110,21 @@ fecha: new Date().toISOString()
 
 e.progreso = progreso
 
+}
+
+}
+
 })
 
-await updateDoc(ref,{
+if(actualizado){
+
+await updateDoc(doc(db,"rutinas",documento.id),{
 ejercicios
 })
+
+}
+
+}
 
 }
 

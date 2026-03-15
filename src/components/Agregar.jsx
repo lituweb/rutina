@@ -108,18 +108,18 @@ onChange={(e)=>setTitulo(e.target.value)}
 
 {ejercicios.map((e,i)=>(
 
-<div key={i} className="bg-white p-3 rounded shadow space-y-2">
+<div key={i} className="bg-orange-100 p-3 rounded shadow space-y-2">
 
 <input
 placeholder="Ejercicio"
-className="border p-2 w-full rounded"
+className="border bg-white p-2 w-full rounded"
 value={e.nombre}
 onChange={(ev)=>cambiarEjercicio(i,"nombre",ev.target.value)}
 />
 
 <input
 placeholder="Repeticiones"
-className="border p-2 w-full rounded"
+className="border bg-white p-2 w-full rounded"
 value={e.reps}
 onChange={(ev)=>cambiarEjercicio(i,"reps",ev.target.value)}
 />
@@ -127,14 +127,14 @@ onChange={(ev)=>cambiarEjercicio(i,"reps",ev.target.value)}
 <input
 type="number"
 placeholder="Peso"
-className="border p-2 w-full rounded"
+className="border bg-white p-2 w-full rounded"
 value={e.peso}
 onChange={(ev)=>cambiarEjercicio(i,"peso",ev.target.value.replace(/[^0-9.]/g,""))}
 />
 
 <input
 placeholder="Especificacion (opcional)"
-className="border p-2 w-full rounded"
+className="border bg-white p-2 w-full rounded"
 value={e.especificacion}
 onChange={(ev)=>cambiarEjercicio(i,"especificacion",ev.target.value)}
 />
