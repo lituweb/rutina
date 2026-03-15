@@ -2,7 +2,9 @@ import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { Trash } from "lucide-react"
 import { db } from "../firebase/firebase"
-import { doc, getDoc, updateDoc } from "firebase/firestore"
+import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore"
+import BackButton from "./BackButton"
+
 
 export default function Editar(){
 
@@ -86,10 +88,23 @@ alert("Rutina actualizada")
 navigate("/rutinas")
 
 }
+const eliminarRutina = async () => {
+
+const confirmar = confirm("¿Seguro que quieres eliminar esta rutina?")
+
+if(!confirmar) return
+
+const ref = doc(db,"rutinas",id)
+
+await deleteDoc(ref)
+
+navigate("/rutinas")
+
+}
 return(
 
 <div className="p-4 space-y-4">
-
+<BackButton/>
 <h1 className="text-xl font-bold">
 Editar rutina
 </h1>
@@ -152,9 +167,16 @@ className="bg-orange-400 text-white py-1 px-3 rounded ">
 
 <button
 onClick={guardar}
-className="bg-orange-600 text-white p-3 rounded w-full">
+className="bg-green-600 text-white p-3 rounded w-full">
 
 Guardar cambios
+
+</button>
+<button
+onClick={eliminarRutina}
+className="bg-red-500 text-white p-3 rounded w-full">
+
+Eliminar rutina
 
 </button>
 

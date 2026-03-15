@@ -3,8 +3,7 @@ import { useParams, useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 import { db } from "../firebase/firebase"
 import { doc, getDoc, updateDoc } from "firebase/firestore"
-import { Home } from "lucide-react"
-
+import { Home, ArrowRight } from "lucide-react"
 export default function Ejercicios(){
 
 const { id } = useParams()
@@ -14,6 +13,8 @@ const [rutina,setRutina] = useState(null)
 const [index,setIndex] = useState(0)
 const [peso,setPeso] = useState("")
 const [terminado,setTerminado] = useState(false)
+const [reps,setReps] = useState("")
+
 useEffect(()=>{
 
 const cargar = async()=>{
@@ -29,6 +30,7 @@ setRutina(data)
 
 if(data.ejercicios.length > 0){
 setPeso(data.ejercicios[0].peso ?? "")
+setReps(data.ejercicios[0].reps ?? "")
 }
 
 }
@@ -43,27 +45,12 @@ if(!rutina) return <p className="p-4">Cargando...</p>
 
 const ejercicio = rutina.ejercicios[index]
 
-const guardarPeso = async ()=>{
-
-const ref = doc(db,"rutinas",id)
+const guardarDatos = ()=>{
 
 const ejercicios = [...rutina.ejercicios]
 
-const progreso = ejercicios[index].progreso || []
-
-const pesoNumero = Number(peso)
-
-progreso.push({
-peso: pesoNumero,
-fecha: new Date().toISOString()
-})
-
-ejercicios[index].peso = pesoNumero
-ejercicios[index].progreso = progreso
-
-await updateDoc(ref,{
-ejercicios
-})
+ejercicios[index].peso = peso === "" ? "" : Number(peso)
+ejercicios[index].reps = reps
 
 setRutina({
 ...rutina,
@@ -72,9 +59,38 @@ ejercicios
 
 }
 
+const guardarSemana = async () => {
+
+const ref = doc(db,"rutinas",id)
+
+const ejercicios = [...rutina.ejercicios]
+
+ejercicios.forEach(e => {
+
+const progreso = e.progreso || []
+
+const semana = progreso.length + 1
+
+progreso.push({
+semana,
+peso: e.peso,
+reps: e.reps,
+fecha: new Date().toISOString()
+})
+
+e.progreso = progreso
+
+})
+
+await updateDoc(ref,{
+ejercicios
+})
+
+}
+
 const siguiente = async ()=>{
 
-await guardarPeso()
+guardarDatos()
 
 if(index < rutina.ejercicios.length - 1){
 
@@ -83,29 +99,33 @@ const nuevoIndex = index + 1
 setIndex(nuevoIndex)
 
 setPeso(rutina.ejercicios[nuevoIndex].peso ?? "")
+setReps(rutina.ejercicios[nuevoIndex].reps ?? "")
 
 }else{
+
+await guardarSemana()
 
 setTerminado(true)
 
 }
 
 }
+
 if(terminado){
 
 return(
 
 <div className="flex flex-col bg-orange-500 items-center justify-center h-screen gap-6">
 
-<h1 className="text-3xl text-white font-bold">
-Muy bien ermano 💪
+<h1 className="text-3xl text-white text-center font-bold">
+Rutina finalizada ermano 💪
 </h1>
 
 <button
 onClick={()=>navigate("/rutinas")}
 className="bg-green-500 text-white p-4 rounded">
 
-Volver al menú
+<Home/>
 
 </button>
 
@@ -149,9 +169,15 @@ transition={{duration:0.3}}
 
 )}
 
-<p className="text-4xl text-white text-center mt-4">
-{ejercicio.reps}
-</p>
+<div className="flex items-center justify-center mt-4 gap-2">
+
+<input
+className="text-center w-30 text-white rounded text-2xl"
+value={reps}
+onChange={(e)=>setReps(e.target.value)}
+/>
+
+</div>
 
 <div className="flex items-center justify-center mt-4 gap-2">
 
@@ -171,9 +197,9 @@ onChange={(e)=>setPeso(e.target.value)}
 
 <button
 onClick={siguiente}
-className="bg-green-500 text-white p-4 rounded text-lg">
+className="bg-green-500 text-center justify-center text-white p-4 rounded text-lg">
 
-Siguiente
+<ArrowRight/>
 
 </button>
 

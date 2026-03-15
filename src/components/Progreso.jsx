@@ -45,13 +45,13 @@ Progreso
 <div
 key={i}
 onClick={()=>navigate(`/miprogreso/${id}/${i}`)}
-className="bg-white p-4 rounded shadow">
+className="bg-orange-500 p-4 rounded shadow">
 
-<div className="font-semibold">
+<div className="font-semibold text-white">
 {e.nombre}
 </div>
 
-<div className="text-sm text-gray-500">
+<div className="text-sm text-white">
 Peso actual: {e.peso}
 </div>
 

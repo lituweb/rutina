@@ -12,7 +12,6 @@ onClick={()=>navigate(-1)}
 className="flex items-center gap-2 text-gray-600 mb-4">
 
 <ArrowLeft size={20}/>
-Volver
 
 </button>
 

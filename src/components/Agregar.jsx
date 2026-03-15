@@ -3,7 +3,7 @@ import { db, auth } from "../firebase/firebase"
 import { collection, addDoc } from "firebase/firestore"
 import { useNavigate } from "react-router-dom"
 import BackButton from "./BackButton"
-
+import { Trash } from "lucide-react"
 
 export default function Agregar(){
 
@@ -33,6 +33,15 @@ nuevos[index][campo] = valor
 setEjercicios(nuevos)
 
 }
+const eliminarEjercicio = (index)=>{
+
+if(ejercicios.length === 1) return
+
+const nuevos = ejercicios.filter((_,i)=> i !== index)
+
+setEjercicios(nuevos)
+
+}
 const formatearPeso = (peso) => {
 
 if(!peso) return null
@@ -46,7 +55,16 @@ try{
 
 const user = auth.currentUser
 
-const ejerciciosFormateados = ejercicios.map(e => ({
+const ejerciciosValidos = ejercicios.filter(e => 
+e.nombre.trim() !== ""
+)
+
+if(ejerciciosValidos.length === 0){
+alert("Agrega al menos un ejercicio")
+return
+}
+
+const ejerciciosFormateados = ejerciciosValidos.map(e => ({
 ...e,
 peso: formatearPeso(e.peso)
 }))
@@ -62,7 +80,7 @@ created: new Date()
 
 alert("Rutina guardada")
 
-navigate("/menu")
+navigate("/rutinas")
 
 }catch(err){
 
@@ -121,6 +139,12 @@ value={e.especificacion}
 onChange={(ev)=>cambiarEjercicio(i,"especificacion",ev.target.value)}
 />
 
+<button
+onClick={()=>eliminarEjercicio(i)}
+className="text-red-500"
+>
+<Trash size={18}/>
+</button>
 </div>
 
 ))}

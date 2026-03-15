@@ -4,7 +4,7 @@ import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "./firebase/firebase"
 
 import Login from "./components/Login"
-import Menu from "./components/Menu"
+// import Menu from "./components/Menu"
 import ListaRutinas from "./components/ListaRutinas"
 import Agregar from "./components/Agregar"
 import Editar from "./components/Editar"
@@ -35,11 +35,11 @@ return(
 
 <Route path="/" element={<Login />} />
 
-<Route path="/menu" element={
+{/* <Route path="/menu" element={
 <ProtectedRoute user={user} loading={loading}>
 <Menu/>
 </ProtectedRoute>
-} />
+} /> */}
 
 <Route path="/rutinas" element={
 <ProtectedRoute user={user} loading={loading}>
@@ -71,7 +71,7 @@ return(
 </ProtectedRoute>
 } />
 
-<Route path="/miprogreso/:id" element={
+<Route path="/miprogreso/:id/:ejercicio" element={
 <ProtectedRoute user={user} loading={loading}>
 <MiProgreso/>
 </ProtectedRoute>

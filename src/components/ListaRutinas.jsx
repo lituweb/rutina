@@ -45,7 +45,7 @@ return(
 
 <div className="p-4 space-y-4">
 
-<div className="flex justify-between items-center">
+<div className="flex justify-between mb-7 items-center">
 
 <h1 className="text-2xl font-bold">
 Rutinas
@@ -66,9 +66,10 @@ className="bg-orange-500 text-white p-2 rounded">
 <div
 key={r.id}
 onClick={()=>navigate(`/ejercicios/${r.id}`)}
-className="flex justify-between items-center bg-white p-4 rounded-xl shadow">
+className="flex justify-between items-center bg-orange-500 p-4 rounded-xl shadow">
 
-{/* <button
+<button
+className="text-white"
 onClick={(e)=>{
 e.stopPropagation()
 navigate(`/progreso/${r.id}`)
@@ -76,13 +77,14 @@ navigate(`/progreso/${r.id}`)
 
 <Activity/>
 
-</button> */}
+</button>
 
-<div className="flex-1 text-center font-semibold">
+<div className="flex-1 text-center text-white font-semibold">
 {r.titulo}
 </div>
 
 <button
+className="text-white"
 onClick={(e)=>{
 e.stopPropagation()
 navigate(`/editar/${r.id}`)
