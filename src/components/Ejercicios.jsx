@@ -137,19 +137,19 @@ transition={{duration:0.3}}
 </div>
 
 <div className="justify-center items-center mt-40 flex flex-col">
-<h2 className="text-4xl text-center text-white font-bold mt-6">
+<h2 className="text-5xl text-center text-white font-bold mt-6">
 {ejercicio.nombre}
 </h2>
 
 {ejercicio.especificacion && (
 
-<p className="text-white mt-2">
+<p className="text-white text-2xl mt-2">
 {ejercicio.especificacion}
 </p>
 
 )}
 
-<p className="text-2xl text-white text-center mt-4">
+<p className="text-4xl text-white text-center mt-4">
 {ejercicio.reps}
 </p>
 
