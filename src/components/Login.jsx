@@ -1,86 +1,91 @@
-import { useState } from "react"
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth"
+import { useState, useEffect } from "react"
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth"
 import { auth } from "../firebase/firebase"
 import { useNavigate } from "react-router-dom"
-import { useEffect } from "react"
-
 
 export default function Login(){
 
-  const [email,setEmail] = useState("")
-  const [password,setPassword] = useState("")
-  const navigate = useNavigate()
-  useEffect(()=>{
+const [email,setEmail] = useState("")
+const [password,setPassword] = useState("")
+const navigate = useNavigate()
 
-if(auth.currentUser){
+// detectar sesión guardada
+useEffect(()=>{
+
+const unsubscribe = onAuthStateChanged(auth,(user)=>{
+
+if(user){
 navigate("/rutinas")
 }
 
-},[])
-  
-  const login = async (e) => {
-  e.preventDefault()
+})
 
-  try {
+return ()=>unsubscribe()
 
-    await signInWithEmailAndPassword(auth, email, password)
+},[navigate])
 
-    navigate("/rutinas")
+const login = async (e) => {
 
-  } catch (err) {
+e.preventDefault()
 
-    console.log(err)
+try{
 
-    // si el usuario no existe lo creamos
-    try {
+await signInWithEmailAndPassword(auth,email,password)
 
-      await createUserWithEmailAndPassword(auth, email, password)
+navigate("/rutinas")
 
-      navigate("/rutinas")
+}catch(err){
 
-    } catch (createErr) {
+try{
 
-      console.log(createErr)
-      alert(createErr.message)
+await createUserWithEmailAndPassword(auth,email,password)
 
-    }
+navigate("/rutinas")
 
-  }
+}catch(createErr){
+
+alert(createErr.message)
+
 }
 
-  return(
+}
 
-    <div className="flex items-center justify-center h-screen">
+}
 
-      <form
-      onSubmit={login}
-      className="bg-white p-6 rounded-xl shadow w-80 space-y-4">
+return(
 
-        <h1 className="text-xl font-bold text-center">
-          Login / Registro
-        </h1>
+<div className="flex items-center justify-center h-screen">
 
-        <input
-        className="w-full border p-2 rounded"
-        placeholder="Email"
-        onChange={(e)=>setEmail(e.target.value)}
-        />
+<form
+onSubmit={login}
+className="bg-white p-6 rounded-xl shadow w-80 space-y-4">
 
-        <input
-        type="password"
-        className="w-full border p-2 rounded"
-        placeholder="Password"
-        onChange={(e)=>setPassword(e.target.value)}
-        />
+<h1 className="text-xl font-bold text-center">
+Login / Registro
+</h1>
 
-        <button
-        className="w-full bg-orange-500 text-white py-2 rounded">
-          Entrar
-        </button>
+<input
+className="w-full border p-2 rounded"
+placeholder="Email"
+onChange={(e)=>setEmail(e.target.value)}
+/>
 
-      </form>
+<input
+type="password"
+className="w-full border p-2 rounded"
+placeholder="Password"
+onChange={(e)=>setPassword(e.target.value)}
+/>
 
-    </div>
+<button
+className="w-full bg-orange-500 text-white py-2 rounded">
+Entrar
+</button>
 
-  )
+</form>
+
+</div>
+
+)
+
 }
