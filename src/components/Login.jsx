@@ -2,13 +2,21 @@ import { useState } from "react"
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth"
 import { auth } from "../firebase/firebase"
 import { useNavigate } from "react-router-dom"
+import { useEffect } from "react"
+
 
 export default function Login(){
 
   const [email,setEmail] = useState("")
   const [password,setPassword] = useState("")
   const navigate = useNavigate()
+  useEffect(()=>{
 
+if(auth.currentUser){
+navigate("/rutinas")
+}
+
+},[])
   
   const login = async (e) => {
   e.preventDefault()
