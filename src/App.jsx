@@ -6,6 +6,11 @@ import { auth } from "./firebase/firebase"
 import Login from "./components/Login"
 import Menu from "./components/Menu"
 import ListaRutinas from "./components/ListaRutinas"
+import Agregar from "./components/Agregar"
+import Editar from "./components/Editar"
+import Ejercicios from "./components/Ejercicios"
+import Progreso from "./components/Progreso"
+import MiProgreso from "./components/MiProgreso"
 import ProtectedRoute from "./components/ProtectedRoute"
 
 export default function App(){
@@ -30,15 +35,45 @@ return(
 
 <Route path="/" element={<Login />} />
 
+<Route path="/menu" element={
+<ProtectedRoute user={user} loading={loading}>
+<Menu/>
+</ProtectedRoute>
+} />
+
 <Route path="/rutinas" element={
 <ProtectedRoute user={user} loading={loading}>
 <ListaRutinas/>
 </ProtectedRoute>
 } />
 
-<Route path="/menu" element={
+<Route path="/agregar" element={
 <ProtectedRoute user={user} loading={loading}>
-<Menu/>
+<Agregar/>
+</ProtectedRoute>
+} />
+
+<Route path="/editar/:id" element={
+<ProtectedRoute user={user} loading={loading}>
+<Editar/>
+</ProtectedRoute>
+} />
+
+<Route path="/ejercicios/:id" element={
+<ProtectedRoute user={user} loading={loading}>
+<Ejercicios/>
+</ProtectedRoute>
+} />
+
+<Route path="/progreso/:id" element={
+<ProtectedRoute user={user} loading={loading}>
+<Progreso/>
+</ProtectedRoute>
+} />
+
+<Route path="/miprogreso/:id" element={
+<ProtectedRoute user={user} loading={loading}>
+<MiProgreso/>
 </ProtectedRoute>
 } />
 
