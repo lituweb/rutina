@@ -15,6 +15,7 @@ const [index,setIndex] = useState(0)
 const [peso,setPeso] = useState("")
 const [terminado,setTerminado] = useState(false)
 const [reps,setReps] = useState("")
+const [guardando,setGuardando] = useState(false)
 
 useEffect(()=>{
 
@@ -45,7 +46,7 @@ cargar()
 if(!rutina) return <p className="p-4">Cargando...</p>
 
 const ejercicio = rutina.ejercicios[index]
-
+const esUltimo = index === rutina.ejercicios.length - 1
 const guardarDatos = ()=>{
 
 const ejercicios = [...rutina.ejercicios]
@@ -130,6 +131,10 @@ ejercicios
 
 const siguiente = async ()=>{
 
+if(guardando) return
+
+setGuardando(true)
+
 guardarDatos()
 
 if(index < rutina.ejercicios.length - 1){
@@ -140,6 +145,8 @@ setIndex(nuevoIndex)
 
 setPeso(rutina.ejercicios[nuevoIndex].peso ?? "")
 setReps(rutina.ejercicios[nuevoIndex].reps ?? "")
+
+setGuardando(false)
 
 }else{
 
@@ -237,9 +244,17 @@ onChange={(e)=>setPeso(e.target.value)}
 
 <button
 onClick={siguiente}
-className="bg-green-500 text-center justify-center text-white p-4 rounded text-lg">
+disabled={guardando}
+className={`flex items-center justify-center gap-2 text-white p-4 rounded text-lg ${
+guardando ? "bg-gray-400 cursor-not-allowed" : "bg-green-500"
+}`}>
 
-<ArrowRight/>
+{guardando
+? "Guardando..."
+: esUltimo
+? "Finalizar rutina"
+: <ArrowRight/>
+}
 
 </button>
 

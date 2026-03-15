@@ -8,7 +8,7 @@ import { Trash } from "lucide-react"
 export default function Agregar(){
 
 const navigate = useNavigate()
-
+const [guardando,setGuardando] = useState(false)
 const [titulo,setTitulo] = useState("")
 
 const [ejercicios,setEjercicios] = useState([
@@ -53,6 +53,8 @@ const guardarRutina = async ()=>{
 
 try{
 
+setGuardando(true)
+
 const user = auth.currentUser
 
 const ejerciciosValidos = ejercicios.filter(e => 
@@ -61,6 +63,7 @@ e.nombre.trim() !== ""
 
 if(ejerciciosValidos.length === 0){
 alert("Agrega al menos un ejercicio")
+setGuardando(false)
 return
 }
 
@@ -86,6 +89,7 @@ navigate("/rutinas")
 
 console.log(err)
 alert("Error guardando rutina")
+setGuardando(false)
 
 }
 
@@ -159,9 +163,12 @@ className="bg-orange-400 text-white px-3 py-1 rounded">
 
 <button
 onClick={guardarRutina}
-className="bg-orange-600 text-white p-3 rounded w-full">
+disabled={guardando}
+className={`p-3 rounded w-full text-white ${
+guardando ? "bg-gray-400 cursor-not-allowed" : "bg-orange-600"
+}`}>
 
-Guardar rutina
+{guardando ? "Guardando..." : "Guardar rutina"}
 
 </button>
 

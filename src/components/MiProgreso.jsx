@@ -67,30 +67,42 @@ Progreso <span className="text-orange-700 text-xl">{nombreEjercicio}</span>
 </h1>
 
 
-<table className="w-full text-center">
+<table className="w-full text-center border-collapse overflow-hidden rounded-lg shadow">
 
-<thead>
+<thead className="bg-orange-500 text-white">
 <tr>
-<th>Semana</th>
-<th>Peso</th>
-<th>Reps</th>
-<th></th>
+<th className="p-3">Semana</th>
+<th className="p-3">Peso</th>
+<th className="p-3">Reps</th>
+<th className="p-3"></th>
 </tr>
 </thead>
 
-<tbody>
+<tbody className="bg-white">
 
 {datos.map((d,i)=>(
 
-<tr key={i}>
-<td>{d.semana}</td>
-<td>{d.peso} kg</td>
-<td>{d.reps}</td>
+<tr
+key={i}
+className="border-b hover:bg-orange-50 transition"
+>
 
-<td>
+<td className="p-3 font-semibold">
+{d.semana}
+</td>
+
+<td className="p-3">
+{d.peso} kg
+</td>
+
+<td className="p-3">
+{d.reps}
+</td>
+
+<td className="p-3">
 <button
 onClick={()=>eliminar(i)}
-className="text-red-500"
+className="text-red-500 hover:text-red-700 transition"
 >
 <Trash size={18}/>
 </button>
