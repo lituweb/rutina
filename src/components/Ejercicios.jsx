@@ -212,7 +212,7 @@ transition={{duration:0.3}}
 <div className="flex items-center justify-center mt-4 gap-2">
 
 <input
-className="text-center w-30 text-white rounded text-2xl"
+className="text-center w-40 text-white rounded text-2xl"
 value={reps}
 onChange={(e)=>setReps(e.target.value)}
 />
@@ -223,7 +223,7 @@ onChange={(e)=>setReps(e.target.value)}
 
 <input
 type="number"
-className=" text-center w-12 text-white rounded text-2xl"
+className=" text-center w-15 text-white rounded text-2xl"
 value={peso}
 onChange={(e)=>setPeso(e.target.value)}
 />
