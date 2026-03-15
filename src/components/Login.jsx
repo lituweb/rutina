@@ -16,7 +16,7 @@ export default function Login(){
 
     await signInWithEmailAndPassword(auth, email, password)
 
-    navigate("/menu")
+    navigate("/rutinas")
 
   } catch (err) {
 
