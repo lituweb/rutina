@@ -38,7 +38,7 @@ return (
 
 <Routes>
 
-<Route path="/" element={<Login />} />
+<Route path="/" element={user ? <Navigate to="/rutinas" /> : <Login />} />
 
 <Route path="/menu" element={
 <ProtectedRoute>
